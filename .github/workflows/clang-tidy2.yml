@@ -1,0 +1,33 @@
+name: Clang-Tidy Check
+
+on:
+  workflow-dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  clang-tidy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-tidy
+
+      - name: Build Code
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          make
+
+      - name: Run Clang-Tidy
+        run: |
+          cd build
+          clang-tidy C++/*.cpp
