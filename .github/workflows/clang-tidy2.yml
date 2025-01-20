@@ -5,9 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   clang-tidy:
