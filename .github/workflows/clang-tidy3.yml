@@ -1,4 +1,4 @@
-name: Clang-Tidy-on-PR
+name: Clang-Tidy on PR
 
 on:
   pull_request:
