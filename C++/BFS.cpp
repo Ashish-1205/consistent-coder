@@ -55,7 +55,9 @@ int main()
 	g.addEdge(3, 3); 
 	cout << "Following is Breadth First Traversal "
 		<< "(starting from vertex 2) \n"; 
-	g.BFS(2); 
+	g.BFS(2);
+	int a,b,c=0;
+	g.addEdge(4,3);
 	return 0; 
 } 
 
