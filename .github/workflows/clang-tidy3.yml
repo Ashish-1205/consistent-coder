@@ -1,0 +1,54 @@
+name: Clang-Tidy PR
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  clang-tidy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-tidy
+
+      - name: Build Code
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          make
+          
+    - name: Fetch Base Branch
+      run: |
+        git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+
+    - name: Get Changed Files
+      run: |
+        git diff --name-only origin/${{ github.event.pull_request.base.ref }} > changed-files.txt
+
+    - name: Filter Changed Files
+      run: |
+        grep -E '\.(cpp|hpp|cc|hh|cxx|hxx)$' changed-files.txt > changed-cpp-files.txt || true
+
+      #- name: Run Clang-Tidy
+       # run: |
+        #  cd build
+         # clang-tidy ../C++/*.cpp
+         
+    - name: Run Clang-Tidy on Changed Files
+      run: |
+        if [ -s changed-cpp-files.txt ]; then
+          xargs -a changed-cpp-files.txt clang-tidy ../C++/*.cpp
+        else
+          echo "No C++ files were changed."
