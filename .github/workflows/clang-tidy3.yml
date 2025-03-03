@@ -52,3 +52,4 @@ jobs:
             xargs -a changed-cpp-files.txt clang-tidy ../C++/*.cpp
           else
             echo "No C++ files were changed."
+          fi
