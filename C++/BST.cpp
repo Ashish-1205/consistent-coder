@@ -55,6 +55,6 @@ int main()
 	cout << endl; 
 	cout << "Inorder traversal after insertion:"; 
 	inorder(root); 
-	return 0; 
+	return 1; 
 } 
 
